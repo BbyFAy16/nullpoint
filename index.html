@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>NULLPOINT</title>
+  <link rel="stylesheet" href="./css/menu.css" />
+</head>
+<body class="in-menu">
+  <canvas id="gl"></canvas>
+  <button id="character-switch" type="button" aria-label="Switch to the next living teammate" hidden>SWITCH</button>
+
+  <!-- ===== MAIN MENU ===== -->
+  <main id="screen-main" class="screen" hidden>
+    <div class="scan"></div>
+    <div class="main-col">
+      <div class="eyebrow">TOP-DOWN TACTICAL SHOOTER</div>
+      <h1 class="logo"><span class="point">NULL</span><span class="slash">//</span><span class="point">POINT</span></h1>
+      <p class="tagline">A decommissioned station built around a geometric anomaly. Two squads, one arena. Rounds are measured in seconds. Survivors are measured in rounds.</p>
+      <nav class="menu-list" aria-label="Main menu">
+        <button class="btn primary" id="btn-play" type="button">PLAY <span class="hint">ENTER</span></button>
+        <button class="btn" id="btn-settings" type="button">SETTINGS <span class="hint">S</span></button>
+        <button class="btn danger" id="btn-quit" type="button">QUIT <span class="hint">Q</span></button>
+      </nav>
+    </div>
+    <div class="foot"><span>NULLPOINT v0.2</span><span>WASD MOVE | MOUSE AIM | CLICK FIRE | R RELOAD | TAB SWITCH | ESC PAUSE</span></div>
+  </main>
+
+  <!-- ===== MATCH SETUP ===== -->
+  <main id="screen-setup" class="screen center" hidden>
+    <div class="scan"></div>
+    <section class="panel" role="dialog" aria-labelledby="setup-title">
+      <header class="panel-head">
+        <div><h2 id="setup-title">MATCH SETUP</h2><div class="sub" id="setup-summary"></div></div>
+      </header>
+      <div class="panel-body">
+        <div>
+          <div class="section-title"><span class="step">01</span> GAME MODE</div>
+          <div class="cards" id="mode-cards"></div>
+        </div>
+        <div>
+          <div class="section-title"><span class="step">02</span> TEAM SIZE</div>
+          <div class="seg" id="size-seg" role="radiogroup" aria-label="Team size">
+            <button type="button" data-size="3" role="radio">3 v 3</button>
+            <button type="button" data-size="5" role="radio">5 v 5</button>
+          </div>
+          <span class="size-note" id="size-note"></span>
+        </div>
+        <div>
+          <div class="section-title"><span class="step">03</span> MATCH RULES</div>
+          <div class="set-grid">
+            <div class="set-row">
+              <div><div class="lbl">Bot difficulty</div><div class="desc">Aim speed, reaction time and burst control.</div></div>
+              <div class="ctl"><div class="seg" id="diff-seg" role="radiogroup" aria-label="Bot difficulty">
+                <button type="button" data-d="easy" role="radio">EASY</button>
+                <button type="button" data-d="normal" role="radio">NORMAL</button>
+                <button type="button" data-d="hard" role="radio">HARD</button>
+              </div></div>
+            </div>
+            <div class="set-row">
+              <div><div class="lbl">Strict vision</div><div class="desc">Enemies outside your vision cone are completely hidden, along with their shots, flashes and names. Off shows them dimmed.</div></div>
+              <div class="ctl"><button type="button" class="toggle" id="strict-toggle" role="switch" aria-checked="false" aria-label="Strict vision"></button></div>
+            </div>
+          </div>
+        </div>
+        <div>
+          <div class="section-title"><span class="step">04</span> YOUR SQUAD (ALPHA)</div>
+          <div class="slots" id="slots"></div>
+          <div class="hint-line">Slot 1 is the character you start as. Press TAB in a match to take over a teammate. Squad OMEGA is built from the remaining roster.</div>
+          <div class="roster" id="roster" style="margin-top:14px"></div>
+        </div>
+      </div>
+      <footer class="panel-foot">
+        <button class="btn small" id="setup-back" type="button">BACK</button>
+        <div class="right">
+          <button class="btn small" id="setup-random" type="button">RANDOMIZE SQUAD</button>
+          <button class="btn small primary center" id="setup-deploy" type="button">DEPLOY</button>
+        </div>
+      </footer>
+    </section>
+  </main>
+
+  <!-- ===== SETTINGS ===== -->
+  <main id="screen-settings" class="screen center dim" hidden>
+    <section class="panel mid" role="dialog" aria-labelledby="settings-title">
+      <header class="panel-head"><div><h2 id="settings-title">SETTINGS</h2><div class="sub">SAVED AUTOMATICALLY</div></div></header>
+      <div class="panel-body" id="settings-body"></div>
+      <footer class="panel-foot">
+        <button class="btn small" id="settings-reset" type="button">RESET TO DEFAULTS</button>
+        <button class="btn small primary center" id="settings-back" type="button">DONE</button>
+      </footer>
+    </section>
+  </main>
+
+  <!-- ===== PAUSE ===== -->
+  <main id="screen-pause" class="screen center dim" hidden>
+    <section class="panel narrow" role="dialog" aria-labelledby="pause-title">
+      <header class="panel-head"><div><h2 id="pause-title">PAUSED</h2><div class="sub" id="pause-sub"></div></div></header>
+      <div class="panel-body" style="gap:10px">
+        <button class="btn primary" id="pause-resume" type="button">RESUME <span class="hint">ESC</span></button>
+        <button class="btn" id="pause-settings" type="button">SETTINGS</button>
+        <button class="btn danger" id="pause-forfeit" type="button">FORFEIT MATCH</button>
+      </div>
+    </section>
+  </main>
+
+  <!-- ===== RESULTS ===== -->
+  <main id="screen-results" class="screen center dim" hidden>
+    <section class="panel mid" role="dialog" aria-labelledby="result-title">
+      <div class="panel-body" id="results-body"></div>
+      <footer class="panel-foot">
+        <button class="btn small" id="results-menu" type="button">MAIN MENU</button>
+        <button class="btn small primary center" id="results-rematch" type="button">REMATCH</button>
+      </footer>
+    </section>
+  </main>
+
+  <!-- ===== QUIT ===== -->
+  <main id="screen-quit" class="screen center dim" hidden>
+    <section class="panel narrow" role="alertdialog" aria-labelledby="quit-title">
+      <header class="panel-head"><div><h2 id="quit-title">QUIT NULLPOINT?</h2></div></header>
+      <div class="panel-body"><p style="color:var(--dim);line-height:1.6">Your settings are saved. Any match in progress is lost.</p></div>
+      <footer class="panel-foot">
+        <button class="btn small" id="quit-cancel" type="button">STAY</button>
+        <button class="btn small danger center" id="quit-confirm" type="button">QUIT</button>
+      </footer>
+    </section>
+  </main>
+
+  <main id="screen-bye" class="screen center" hidden>
+    <div class="scan"></div>
+    <div class="bye">
+      <h1 class="logo"><span class="point">NULL</span><span class="slash">//</span><span class="point">POINT</span></h1>
+      <p>Session ended. You can close this tab.</p>
+      <button class="btn primary center" id="bye-back" type="button" style="margin:0 auto;width:240px">RELAUNCH</button>
+    </div>
+  </main>
+
+  <div id="loading">LOADING NULLPOINT...</div>
+  <script type="module" src="./js/main.js"></script>
+</body>
+</html>
